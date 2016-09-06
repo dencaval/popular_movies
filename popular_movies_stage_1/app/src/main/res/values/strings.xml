@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Project01</string>
+    <string name="action_settings">Settings</string>
+    <string name="pref_sorting_label">Sort by</string>
+    <string name="pref_sorting_key">sortby</string>
+    <string name="pref_sorting_default">options</string>
+    <string name="pref_sorting_popular_value">popular</string>
+    <string name="pref_sorting_rating_value">rating</string>
+    <string name="pref_sorting_popular_entry">Popularity</string>
+    <string name="pref_sorting_rating_entry">Average Rating</string>
+
+    <string-array name="pref_sorting_options_values">
+        <item>@string/pref_sorting_popular_value</item>
+        <item>@string/pref_sorting_rating_value</item>
+    </string-array>
+
+    <string-array name="pref_sorting_options_entries">
+        <item>@string/pref_sorting_popular_entry</item>
+        <item>@string/pref_sorting_rating_entry</item>
+    </string-array>
+</resources>
