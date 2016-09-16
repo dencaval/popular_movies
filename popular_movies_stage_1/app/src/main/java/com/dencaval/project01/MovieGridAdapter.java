@@ -10,7 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.dencaval.project01.model.MovieInfo;
+import com.dencaval.project01.ThemoviedbClient.MovieInfo;
+import com.dencaval.project01.ThemoviedbClient.RequestResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,25 +21,45 @@ import java.util.ArrayList;
  */
 public class MovieGridAdapter extends BaseAdapter {
     private Context context;
-    ArrayList<MovieInfo> result;
+    RequestResponse result;
 
-    public MovieGridAdapter(Context c, ArrayList<MovieInfo> r) {
+    public MovieGridAdapter(Context c) {
         context = c;
-        result = r;
+        result = new RequestResponse();
     }
+
+    public void append_data(RequestResponse new_r){
+        if(new_r.getCurrent_page() != result.getCurrent_page()){
+            ArrayList<MovieInfo> current = result.getMovie_info_list();
+            current.addAll(new_r.getMovie_info_list());
+            result.setMovie_info_list(current);
+            result.setCurrent_page(new_r.getCurrent_page());
+        }
+    }
+
+    public int getCurrentPage(){
+        return result.getCurrent_page();
+    }
+
     @Override
     public int getCount() {
-        return result.size();
+        if (result.getMovie_info_list().isEmpty()){
+            return 0;
+        } else {
+            return result.getMovie_info_list().size();
+        }
     }
 
     @Override
     public Object getItem(int i) {
-        return result.get(i);
+        if (result.getMovie_info_list().isEmpty()){return null;}
+        else return result.getMovie_info_list().get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return Long.parseLong(result.get(i).id);
+        if (result.getMovie_info_list().isEmpty()){return 0;}
+        else return Long.parseLong(result.getMovie_info_list().get(i).id);
     }
 
     @Override
@@ -62,9 +83,9 @@ public class MovieGridAdapter extends BaseAdapter {
         }
 
         final String BASE_URL = "http://image.tmdb.org/t/p/w185";
-        String url = BASE_URL + result.get(i).posterPath;
+        String url = BASE_URL + result.getMovie_info_list().get(i).posterPath;
         Uri current_uri = Uri.parse(url).buildUpon()
-                .appendQueryParameter("api_key", utils.TMDB_API_KEY).build();
+                .appendQueryParameter("api_key", Utils.TMDB_API_KEY).build();
 
         // Picasso already loads image in background
         Picasso.with(((Activity) context)).load(current_uri.toString()).error(R.mipmap.ic_no_image).into(imageView);

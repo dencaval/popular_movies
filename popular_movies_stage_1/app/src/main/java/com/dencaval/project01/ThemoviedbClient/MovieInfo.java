@@ -1,4 +1,4 @@
-package com.dencaval.project01.model;
+package com.dencaval.project01.ThemoviedbClient;
 
 /**
  * Created by denis on 06/09/2016.

@@ -1,19 +1,14 @@
-package com.dencaval.project01.network;
+package com.dencaval.project01.ThemoviedbClient;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.dencaval.project01.MovieGridAdapter;
-import com.dencaval.project01.R;
-import com.dencaval.project01.model.MovieInfo;
-import com.dencaval.project01.utils;
+import com.dencaval.project01.Utils;
+import com.dencaval.project01.Utils.Criteria;
 
 import org.json.JSONException;
 
@@ -24,7 +19,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
 /**
  * Created by denis on 06/09/2016.
@@ -38,23 +32,25 @@ import java.util.ArrayList;
 // get best vote average
 // https://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&api_key=91aac8f2720c38e2a19de85f21271430&page=1
 
-public class MovieRequestTask extends AsyncTask<Enum, Void, ArrayList<MovieInfo>> {
-    final String LOG_TAG = "MovieRequestTask";
+
+public class MoviePageRequest extends AsyncTask<RequestParameter, Void, RequestResponse> {
+    final String LOG_TAG = "MoviePageRequest";
     Context context;
     GridView gridView;
 
-    public MovieRequestTask(Context c, GridView gv){
+    public MoviePageRequest(Context c, GridView gv){
         context = c;
         gridView = gv;
     }
 
     @Override
-    protected ArrayList<MovieInfo> doInBackground(Enum... params) {
+    protected RequestResponse doInBackground(RequestParameter... params) {
         int result = 5;
 
-        Enum enum_criteria = (utils.Criteria) params[0];
+        Enum enum_criteria = (Criteria) params[0].getCriteria();
+        String movie_list_page = String.valueOf(params[0].getPage_id());
         String criteria;
-        if(enum_criteria == utils.Criteria.popular){
+        if(enum_criteria == Criteria.popular){
             criteria = "popularity.desc";
         }else{
             criteria = "vote_average.desc";
@@ -74,8 +70,8 @@ public class MovieRequestTask extends AsyncTask<Enum, Void, ArrayList<MovieInfo>
         final String PAGE = "page";
         Uri current_uri = Uri.parse(BASE_URL).buildUpon()
                 .appendQueryParameter(SORT_BY, criteria)
-                .appendQueryParameter(PAGE, "1")
-                .appendQueryParameter("api_key", utils.TMDB_API_KEY)
+                .appendQueryParameter(PAGE, movie_list_page)
+                .appendQueryParameter("api_key", Utils.TMDB_API_KEY)
                 .build();
         try {
             url = new URL(current_uri.toString());
@@ -110,22 +106,19 @@ public class MovieRequestTask extends AsyncTask<Enum, Void, ArrayList<MovieInfo>
             e.printStackTrace();
         }
 
-        ArrayList<MovieInfo> movieList = null;
+        RequestResponse resquest_response = null;
         try {
-            movieList = utils.getMovieList(buffer.toString(), 10);
+            resquest_response = Utils.getMovieList(buffer.toString(), 10);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return movieList;
+        return resquest_response;
     }
 
-    protected void onPostExecute(ArrayList<MovieInfo> result){
-        MovieGridAdapter movieGridGridAdapter = new MovieGridAdapter((Activity)context, result);
-        gridView.setAdapter(movieGridGridAdapter);
-
-        Toast toast = Toast.makeText(context, "teste",
-                Toast.LENGTH_LONG);
-        toast.show();
+    protected void onPostExecute(RequestResponse response){
+        MovieGridAdapter m = (MovieGridAdapter) gridView.getAdapter();
+        m.append_data(response);
+        m.notifyDataSetChanged();
     }
 }
