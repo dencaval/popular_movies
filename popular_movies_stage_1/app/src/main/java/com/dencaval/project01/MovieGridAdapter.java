@@ -28,6 +28,12 @@ public class MovieGridAdapter extends BaseAdapter {
         result = new RequestResponse();
     }
 
+    public void clear_data(){
+        result.getMovie_info_list().clear();
+        result.setTotal_results(0);
+        result.setTotal_pages(0);
+    }
+
     public void append_data(RequestResponse new_r){
         if(new_r.getCurrent_page() != result.getCurrent_page()){
             ArrayList<MovieInfo> current = result.getMovie_info_list();

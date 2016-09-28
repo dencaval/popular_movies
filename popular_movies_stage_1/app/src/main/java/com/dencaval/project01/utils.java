@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Created by denis on 06/09/2016.
  */
 public class Utils {
-    final static public String TMDB_API_KEY = "91aac8f2720c38e2a19de85f21271430";
+    final static public String TMDB_API_KEY = "";
 
     public enum Criteria{
         popular,

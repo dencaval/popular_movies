@@ -33,20 +33,17 @@ import java.net.URL;
 // https://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&api_key=91aac8f2720c38e2a19de85f21271430&page=1
 
 
-public class MoviePageRequest extends AsyncTask<RequestParameter, Void, RequestResponse> {
-    final String LOG_TAG = "MoviePageRequest";
+public class AsyncMoviePageRequest extends AsyncTask<RequestParameter, Void, RequestResponse> {
     Context context;
     GridView gridView;
 
-    public MoviePageRequest(Context c, GridView gv){
+    public AsyncMoviePageRequest(Context c, GridView gv){
         context = c;
         gridView = gv;
     }
 
     @Override
     protected RequestResponse doInBackground(RequestParameter... params) {
-        int result = 5;
-
         Enum enum_criteria = (Criteria) params[0].getCriteria();
         String movie_list_page = String.valueOf(params[0].getPage_id());
         String criteria;
@@ -59,11 +56,6 @@ public class MoviePageRequest extends AsyncTask<RequestParameter, Void, RequestR
         HttpURLConnection urlConnection = null;
         URL url = null;
         BufferedReader reader = null;
-
-//        SharedPreferences pref = PreferenceManager
-//                .getDefaultSharedPreferences(getActivity());
-//
-//        String sort_by = pref.getString(getString(R.string.pref_sorting_key), "");
 
         final String BASE_URL = "https://api.themoviedb.org/3/discover/movie";
         final String SORT_BY = "sort_by";
