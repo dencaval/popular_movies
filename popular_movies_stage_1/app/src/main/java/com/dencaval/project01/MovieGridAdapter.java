@@ -35,11 +35,13 @@ public class MovieGridAdapter extends BaseAdapter {
     }
 
     public void append_data(RequestResponse new_r){
-        if(new_r.getCurrent_page() != result.getCurrent_page()){
-            ArrayList<MovieInfo> current = result.getMovie_info_list();
-            current.addAll(new_r.getMovie_info_list());
-            result.setMovie_info_list(current);
-            result.setCurrent_page(new_r.getCurrent_page());
+        if( new_r != null) {
+            if (new_r.getCurrent_page() != result.getCurrent_page()) {
+                ArrayList<MovieInfo> current = result.getMovie_info_list();
+                current.addAll(new_r.getMovie_info_list());
+                result.setMovie_info_list(current);
+                result.setCurrent_page(new_r.getCurrent_page());
+            }
         }
     }
 

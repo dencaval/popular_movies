@@ -1,14 +1,17 @@
 package com.dencaval.project01.ThemoviedbClient;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.dencaval.project01.MovieGridAdapter;
+import com.dencaval.project01.R;
 import com.dencaval.project01.Utils;
-import com.dencaval.project01.Utils.Criteria;
 
 import org.json.JSONException;
 
@@ -23,45 +26,44 @@ import java.net.URL;
 /**
  * Created by denis on 06/09/2016.
  */
-// Get poster example
-// http://image.tmdb.org/t/p/w185/811DjJTon9gD6hZ8nCjSitaIXFQ.jpg?api_key=91aac8f2720c38e2a19de85f21271430
-// Get movie metadata example
-// https://api.themoviedb.org/3/movie/297761?api_key=91aac8f2720c38e2a19de85f21271430
-// Get more best popularity
-// https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=91aac8f2720c38e2a19de85f21271430&page=1
-// get best vote average
-// https://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&api_key=91aac8f2720c38e2a19de85f21271430&page=1
-
-
 public class AsyncMoviePageRequest extends AsyncTask<RequestParameter, Void, RequestResponse> {
     Context context;
     GridView gridView;
+    private ProgressDialog dialog;
 
     public AsyncMoviePageRequest(Context c, GridView gv){
         context = c;
         gridView = gv;
+        dialog = new ProgressDialog(context);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        this.dialog.setMessage("Loading data");
+        this.dialog.show();
     }
 
     @Override
     protected RequestResponse doInBackground(RequestParameter... params) {
-        Enum enum_criteria = (Criteria) params[0].getCriteria();
+        String criteria = (String) params[0].getCriteria();
         String movie_list_page = String.valueOf(params[0].getPage_id());
-        String criteria;
-        if(enum_criteria == Criteria.popular){
-            criteria = "popularity.desc";
+
+        String use_criteria = "";
+        if(criteria == Utils.CRITERIA_POPULAR){
+            use_criteria = "popular";
         }else{
-            criteria = "vote_average.desc";
+            use_criteria = "top_rated";
         }
 
         HttpURLConnection urlConnection = null;
         URL url = null;
         BufferedReader reader = null;
 
-        final String BASE_URL = "https://api.themoviedb.org/3/discover/movie";
+        final String BASE_URL = "https://api.themoviedb.org/3/movie";
         final String SORT_BY = "sort_by";
         final String PAGE = "page";
         Uri current_uri = Uri.parse(BASE_URL).buildUpon()
-                .appendQueryParameter(SORT_BY, criteria)
+                .appendPath(use_criteria)
                 .appendQueryParameter(PAGE, movie_list_page)
                 .appendQueryParameter("api_key", Utils.TMDB_API_KEY)
                 .build();
@@ -89,11 +91,6 @@ public class AsyncMoviePageRequest extends AsyncTask<RequestParameter, Void, Req
             while ((line = reader.readLine()) != null) {
                 buffer.append(line + "\n");
             }
-
-            //TODO: why is buffer.length zero?
-//                if (buffer.length() == 0) {
-//                    return null;
-//                }
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -109,8 +106,21 @@ public class AsyncMoviePageRequest extends AsyncTask<RequestParameter, Void, Req
     }
 
     protected void onPostExecute(RequestResponse response){
-        MovieGridAdapter m = (MovieGridAdapter) gridView.getAdapter();
-        m.append_data(response);
-        m.notifyDataSetChanged();
+        if( response == null){
+            Log.d("AsyncMoviePageRequest", "no response");
+            Toast.makeText(context,
+                    context.getResources().getText(R.string.no_server_response),
+                    Toast.LENGTH_LONG).show();
+            return ;
+        }else{
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+                dialog.cancel();
+            }
+
+            MovieGridAdapter m = (MovieGridAdapter) gridView.getAdapter();
+            m.append_data(response);
+            m.notifyDataSetChanged();
+        }
     }
 }

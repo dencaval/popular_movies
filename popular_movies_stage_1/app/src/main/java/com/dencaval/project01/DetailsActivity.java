@@ -1,33 +1,36 @@
 package com.dencaval.project01;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Point;
 import android.net.Uri;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dencaval.project01.databinding.ActivityDetailsBinding;
 import com.squareup.picasso.Picasso;
 
 public class DetailsActivity extends AppCompatActivity {
-
+    ActivityDetailsBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+        binding = DataBindingUtil.setContentView(this,
+                R.layout.activity_details);
 
-        TextView originalTitle = (TextView) findViewById(R.id.originalTitle);
-        TextView releaseDate = (TextView) findViewById(R.id.releaseDate);
-        ImageView imageViewPosterPath = (ImageView) findViewById(R.id.posterPath);
-        TextView userRating = (TextView) findViewById(R.id.userRating);
-        TextView overview = (TextView) findViewById(R.id.overview);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
         Intent movieDetailsIntent = getIntent();
-        originalTitle.setText(movieDetailsIntent.getStringExtra("originalTitle"));
-        releaseDate.setText(movieDetailsIntent.getStringExtra("releaseDate"));
-        userRating.setText(movieDetailsIntent.getStringExtra("userRating"));
-        overview.setText(movieDetailsIntent.getStringExtra("overview"));
+        binding.originalTitle.setText(movieDetailsIntent.getStringExtra("originalTitle"));
+        binding.releaseDate.setText(movieDetailsIntent.getStringExtra("releaseDate"));
+        binding.userRating.setText(movieDetailsIntent.getStringExtra("userRating"));
+        binding.overview.setText(movieDetailsIntent.getStringExtra("overview"));
 
         final String BASE_URL = "http://image.tmdb.org/t/p/w185";
         String url = BASE_URL + movieDetailsIntent.getStringExtra("posterPath");
@@ -41,6 +44,11 @@ public class DetailsActivity extends AppCompatActivity {
         int halfScreenWidth = (int)(screenWidth *0.33);
         int halfScreenHeight = (int) (screenHeight * 0.33);
 
-        Picasso.with(this).load(current_uri.toString()).into(imageViewPosterPath);
+        Picasso.with(this).load(current_uri.toString()).into(binding.posterPath);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }

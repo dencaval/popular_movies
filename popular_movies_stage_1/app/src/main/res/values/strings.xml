@@ -2,7 +2,7 @@
     <string name="app_name">P1 - Stage 1</string>
     <string name="action_settings">Settings</string>
     <string name="pref_sorting_label">Change Sorting Criteria</string>
-    <string name="pref_sorting_key">sortby</string>
+    <string name="pref_sorting_key">sortbyvalue</string>
     <string name="pref_sorting_default">options</string>
     <string name="pref_sorting_popular_value">popular</string>
     <string name="pref_sorting_rating_value">rating</string>
@@ -10,12 +10,29 @@
     <string name="pref_sorting_rating_entry">Average Rating</string>
 
     <string-array name="pref_sorting_options_values">
-        <item>@string/pref_sorting_popular_value</item>
-        <item>@string/pref_sorting_rating_value</item>
+        <item>0</item>
+        <item>1</item>
     </string-array>
 
     <string-array name="pref_sorting_options_entries">
         <item>@string/pref_sorting_popular_entry</item>
         <item>@string/pref_sorting_rating_entry</item>
     </string-array>
+
+    <string name="tv_title">"Title: "</string>
+    <string name="tv_release_date">"Release Date: "</string>
+    <string name="tv_user_rating">"User Rating: "</string>
+    <string name="tv_movie_info_not_found">Info not found</string>
+
+    <string name="lorem_ipsum_description">Lorem ipsum dolor sit amet, consectetur adipiscing
+        elit. Fusce non rhoncus arcu. Nam commodo consequat leo vitae suscipit. Nulla id arcu
+        tortor. Morbi in eros eget neque gravida accumsan. Praesent vel cursus magna. Ut
+        consectetur feugiat pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et
+        ultrices posuere cubilia Curae; Mauris neque purus, euismod eget nibh ut, ultrices suscipit
+        nisl. Suspendisse potenti. Etiam bibendum sit amet purus vel vulputate. Aenean cursus diam
+        elit, tincid.</string>
+
+    <color name="black">#ffffff</color>
+
+    <string name="no_server_response">Sorry, cannot retrieve data from server!</string>
 </resources>
