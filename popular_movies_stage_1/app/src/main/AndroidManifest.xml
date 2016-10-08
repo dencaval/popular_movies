@@ -28,7 +28,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dencaval.project01.MainActivity"></meta-data>
         </activity>
-        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="text"
+            android:parentActivityName=".DetailsActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dencaval.project01.DetailsActivity"></meta-data>
+        </activity>
     </application>
 
 </manifest>
