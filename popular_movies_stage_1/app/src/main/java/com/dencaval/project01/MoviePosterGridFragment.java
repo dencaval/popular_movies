@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,8 +42,6 @@ public class MoviePosterGridFragment {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setHasOptionsMenu(true);
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            previousCriteria = prefs.getString(getString(R.string.pref_sorting_key), Utils.CRITERIA_POPULAR);
         }
 
         @Override
@@ -65,11 +64,12 @@ public class MoviePosterGridFragment {
                     MovieInfo movie = (MovieInfo) binding.gridView.getAdapter().getItem(i);
                     Intent movieDetailsIntent = new Intent(getActivity(), DetailsActivity.class);
 
-                    movieDetailsIntent.putExtra("originalTitle", movie.originalTitle);
-                    movieDetailsIntent.putExtra("posterPath", movie.posterPath);
-                    movieDetailsIntent.putExtra("overview", movie.overview);
-                    movieDetailsIntent.putExtra("userRating", movie.userRating);
-                    movieDetailsIntent.putExtra("releaseDate", movie.releaseDate);
+                    MovieParcelable mp = new MovieParcelable(movie.originalTitle,
+                            movie.posterPath,
+                            movie.overview,
+                            movie.userRating,
+                            movie.releaseDate);
+                    movieDetailsIntent.putExtra("movie_info", mp);
 
                     startActivity(movieDetailsIntent);
                 }
@@ -89,14 +89,16 @@ public class MoviePosterGridFragment {
                         AsyncMoviePageRequest movieTask =
                                 new AsyncMoviePageRequest(getContext(), binding.gridView);
 
-                        String criteria;
-                        if(previousCriteria == Utils.CRITERIA_USER_RATING){
-                            criteria = Utils.CRITERIA_USER_RATING;
-                        }else{
-                            criteria = Utils.CRITERIA_POPULAR;
-                        }
+                        SharedPreferences prefs =
+                                PreferenceManager.getDefaultSharedPreferences(getActivity());
+                        String currentSortingCriteria =
+                                prefs.getString(getString(R.string.pref_sorting_key),
+                                Utils.CRITERIA_POPULAR);
+
+                        previousCriteria = currentSortingCriteria;
+
                         RequestParameter parameter = new RequestParameter();
-                        parameter.setCriteria(criteria);
+                        parameter.setCriteria(currentSortingCriteria);
                         parameter.setPage_id(movieGridAdapter.getCurrentPage() + 1);
                         movieTask.execute(parameter);
                     }
@@ -124,6 +126,8 @@ public class MoviePosterGridFragment {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             String currentSortingCriteria = prefs.getString(getString(R.string.pref_sorting_key),
                     Utils.CRITERIA_POPULAR);
+            Log.d("MoviePosterGridFragment", "resume current: " + currentSortingCriteria);
+            Log.d("MoviePosterGridFragment", "resume previous: " + previousCriteria);
 
             if(previousCriteria != currentSortingCriteria){
                 previousCriteria = currentSortingCriteria;
@@ -136,13 +140,8 @@ public class MoviePosterGridFragment {
 
                 RequestParameter parameter = new RequestParameter();
                 parameter.setPage_id(1); // Should it restart to page 01?
-                if(currentSortingCriteria == Utils.CRITERIA_USER_RATING){
-                    parameter.setCriteria(Utils.CRITERIA_USER_RATING);
-                    movieTask.execute(parameter);
-                }else{
-                    parameter.setCriteria(Utils.CRITERIA_POPULAR);
-                    movieTask.execute(parameter);
-                }
+                parameter.setCriteria(currentSortingCriteria);
+                movieTask.execute(parameter);
             }
         }
     }

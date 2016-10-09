@@ -27,13 +27,14 @@ public class DetailsActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
 
         Intent movieDetailsIntent = getIntent();
-        binding.originalTitle.setText(movieDetailsIntent.getStringExtra("originalTitle"));
-        binding.releaseDate.setText(movieDetailsIntent.getStringExtra("releaseDate"));
-        binding.userRating.setText(movieDetailsIntent.getStringExtra("userRating"));
-        binding.overview.setText(movieDetailsIntent.getStringExtra("overview"));
+        MovieParcelable mp = movieDetailsIntent.getParcelableExtra("movie_info");
+        binding.originalTitle.setText(mp.getOriginalTitle());
+        binding.releaseDate.setText(mp.getReleaseDate());
+        binding.userRating.setText(mp.getUserRating());
+        binding.overview.setText(mp.getOverview());
 
         final String BASE_URL = "http://image.tmdb.org/t/p/w185";
-        String url = BASE_URL + movieDetailsIntent.getStringExtra("posterPath");
+        String url = BASE_URL + mp.getPosterPath();
         Uri current_uri = Uri.parse(url).buildUpon()
                 .appendQueryParameter("api_key", Utils.TMDB_API_KEY).build();
 

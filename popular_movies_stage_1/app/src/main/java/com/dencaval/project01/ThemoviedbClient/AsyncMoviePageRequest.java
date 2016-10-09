@@ -49,7 +49,7 @@ public class AsyncMoviePageRequest extends AsyncTask<RequestParameter, Void, Req
         String movie_list_page = String.valueOf(params[0].getPage_id());
 
         String use_criteria = "";
-        if(criteria == Utils.CRITERIA_POPULAR){
+        if(criteria.equals(Utils.CRITERIA_POPULAR)){
             use_criteria = "popular";
         }else{
             use_criteria = "top_rated";
@@ -72,6 +72,8 @@ public class AsyncMoviePageRequest extends AsyncTask<RequestParameter, Void, Req
         }catch (MalformedURLException e){
             e.printStackTrace();
         }
+
+        Log.d("AsyncMoviePageRequest",url.toString());
 
         InputStream inputStream = null;
         StringBuffer buffer = new StringBuffer();
