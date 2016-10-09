@@ -1,6 +1,5 @@
 package com.dencaval.project01;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
@@ -8,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,14 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.dencaval.project01.ThemoviedbClient.MovieInfo;
-import com.dencaval.project01.ThemoviedbClient.AsyncMoviePageRequest;
-import com.dencaval.project01.ThemoviedbClient.RequestParameter;
+import com.dencaval.project01.themoviedbclient.MovieInfo;
+import com.dencaval.project01.themoviedbclient.AsyncMoviePageRequest;
+import com.dencaval.project01.themoviedbclient.RequestParameter;
 
-import com.dencaval.project01.Utils;
 import com.dencaval.project01.databinding.ActivityMainBinding;
 
 /**

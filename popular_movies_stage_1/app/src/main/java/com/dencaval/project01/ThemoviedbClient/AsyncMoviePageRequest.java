@@ -1,6 +1,5 @@
-package com.dencaval.project01.ThemoviedbClient;
+package com.dencaval.project01.themoviedbclient;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;

@@ -1,4 +1,4 @@
-package com.dencaval.project01.ThemoviedbClient;
+package com.dencaval.project01.themoviedbclient;
 
 import com.dencaval.project01.MovieGridAdapter;
 

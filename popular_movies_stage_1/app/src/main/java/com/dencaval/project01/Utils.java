@@ -1,7 +1,7 @@
 package com.dencaval.project01;
 
-import com.dencaval.project01.ThemoviedbClient.MovieInfo;
-import com.dencaval.project01.ThemoviedbClient.RequestResponse;
+import com.dencaval.project01.themoviedbclient.MovieInfo;
+import com.dencaval.project01.themoviedbclient.RequestResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;

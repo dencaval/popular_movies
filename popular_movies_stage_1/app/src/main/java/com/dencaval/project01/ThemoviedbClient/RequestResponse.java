@@ -1,7 +1,6 @@
-package com.dencaval.project01.ThemoviedbClient;
+package com.dencaval.project01.themoviedbclient;
 
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 /**
  * Created by denis on 07/09/2016.

@@ -10,8 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.dencaval.project01.ThemoviedbClient.MovieInfo;
-import com.dencaval.project01.ThemoviedbClient.RequestResponse;
+import com.dencaval.project01.themoviedbclient.MovieInfo;
+import com.dencaval.project01.themoviedbclient.RequestResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
