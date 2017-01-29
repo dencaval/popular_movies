@@ -77,6 +77,8 @@ public class AsyncMoviePageRequest extends AsyncTask<RequestParameter, Void, Req
         InputStream inputStream = null;
         StringBuffer buffer = new StringBuffer();
 
+        RequestResponse resquest_response = null;
+
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
@@ -94,13 +96,15 @@ public class AsyncMoviePageRequest extends AsyncTask<RequestParameter, Void, Req
             }
         }catch (IOException e){
             e.printStackTrace();
+            return null;
         }
 
-        RequestResponse resquest_response = null;
+
         try {
             resquest_response = Utils.getMovieList(buffer.toString(), 10);
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
 
         return resquest_response;
@@ -108,7 +112,6 @@ public class AsyncMoviePageRequest extends AsyncTask<RequestParameter, Void, Req
 
     protected void onPostExecute(RequestResponse response){
         if( response == null){
-            Log.d("AsyncMoviePageRequest", "no response");
             Toast.makeText(context,
                     context.getResources().getText(R.string.no_server_response),
                     Toast.LENGTH_LONG).show();
